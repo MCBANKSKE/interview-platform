@@ -11,17 +11,16 @@ class CandidateWelcome extends Component
 
     public function mount()
     {
-        $candidateId = session('candidate_id');
-        if (!$candidateId) {
+        if (!session()->has('candidate_id')) {
             return redirect()->route('candidate.login');
         }
 
-        $this->candidate = Candidate::findOrFail($candidateId);
+        $this->candidate = Candidate::find(session('candidate_id'));
     }
 
-    public function startTest()
+    public function startExam()
     {
-        return redirect()->route('candidate.exam'); // exam flow page (to build next)
+        return redirect()->route('candidate.exam');
     }
 
     public function render()

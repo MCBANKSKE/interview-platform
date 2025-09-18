@@ -17,16 +17,16 @@ class CandidateLogin extends Component
             'passport_number' => 'required|string',
         ]);
 
-        $candidate = Candidate::where('first_name', $this->first_name)
+        $candidate = Candidate::whereRaw('LOWER(first_name) = ?', [strtolower($this->first_name)])
             ->where('passport_number', $this->passport_number)
             ->first();
 
         if ($candidate) {
             session(['candidate_id' => $candidate->id]);
-            return redirect()->route('candidate.welcome'); // exam page (we’ll build next)
+            return redirect()->route('candidate.welcome');
         }
 
-        $this->addError('login', 'Invalid details. Please try again.');
+        $this->addError('login', 'Invalid credentials. Please try again.');
     }
 
     public function render()
